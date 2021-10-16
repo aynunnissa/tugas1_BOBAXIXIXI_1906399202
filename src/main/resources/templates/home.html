@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>BOBAXIXIXI</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+    <nav th:replace="fragments/fragment :: navbar"></nav>
+    <div class="container mt-4">
+        <h2>Selamat datang di BOBAXIXIXI!</h2>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Lihat Store</h5>
+                <p class="card-text">Lihat, update, tambah, dan hapus Store.</p>
+                <a th:href="@{/store}" class="btn btn-primary">Ke Store</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Boba Tea</h5>
+                <p class="card-text">Lihat, update, tambah, dan tambah boba ke Store.</p>
+                <a th:href="@{/boba}" class="btn btn-primary">Ke Boba Tea</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Search</h5>
+                <p class="card-text">Menampilkan daftar Boba Tea spesifik berdasarkan suatu topping yang sedang dijual oleh Store yang buka</p>
+                <a th:href="@{/search}" class="btn btn-primary">Lakukan pencarian</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Filter</h5>
+                <p class="card-text">Menampilkan daftar manager dari toko yang memiliki nama boba yang dicari</p>
+                <a th:href="@{/filter/manager}" class="btn btn-primary">Filter Manager</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</body>
+</html>

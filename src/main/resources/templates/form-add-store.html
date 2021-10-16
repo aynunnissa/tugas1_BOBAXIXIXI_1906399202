@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Tambah Store</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container">
+    <div class="row d-flex justify-content-center mt-4">
+        <div class="col-12 col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-center">
+                        <h2 class="text-center">Tambah Store Baru</h2>
+                        <br>
+                        <form th:action="@{/store/add}" th:object="${store}" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Store Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Store Name.."/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Manager</label>
+                                    <select class="form-control" name="idManager">
+                                        <option th:each="manager : ${listManager}"
+                                                th:value="${manager.id}"
+                                                th:text="${manager.fullName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea rows="3" class="form-control" type="text" placeholder="Address.." name="address"></textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Open Hour</label>
+                                    <input required class="form-control" type="time" name="openHour" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Close Hour</label>
+                                    <input required class="form-control" type="time" name="closeHour" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 d-flex justify-content-end">
+                                    <a class="btn btn-outline-secondary w-50 text-center" href="@{/store}">Cancel</a>
+                                </div>
+                                <div class="form-group col-md-6 d-flex justify-content-start">
+                                    <button type="submit" class="btn btn-success w-50 text-center">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

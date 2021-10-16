@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Store Berhasil Ditambah</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="row mt-4 overflow-hidden">
+    <div class="col col-6 offset-3">
+        <h1 class="text-center">Store Detail</h1>
+        <div class="row p-4">
+            <div class="col-6">
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Nama Store</p>
+                    <p th:text="${store.name}"></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Address</p>
+                    <p th:text="${store.address}"></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Open Hour</p>
+                    <p th:text="${store.openHour}"></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Close Hour</p>
+                    <p th:text="${store.closeHour}"></p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Manager</p>
+                    <p th:text="${store.idManager.fullName}"></p>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-between">
+                    <p class="font-weight-bold">Store Code</p>
+                    <p th:text="${store.storeCode}"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row p-4">
+            <div class="col-12">
+                <h3 class="text-center">List of Boba Tea</h3>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Topping</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="boba, iterationStatus : ${listBoba}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${boba.name}"></td>
+                        <td th:text="${boba.idTopping.name}"></td>
+                        <td th:text="${boba.price}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-warning text-center my-3" th:href="@{/store/} + ${store.id} + '/assign-boba'">+ Add boba to store</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

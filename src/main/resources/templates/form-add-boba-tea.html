@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Tambah Boba Tea</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container">
+    <div class="row d-flex justify-content-center mt-4">
+        <div class="col-12 col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="justify-content-center">
+                        <h2 class="text-center">Add New Boba Tea</h2>
+                        <br>
+                        <form th:action="@{/boba/add}" th:object="${boba}" method="POST">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Boba Tea Name</label>
+                                    <input class="form-control" type="text" name="name" placeholder="Boba Tea Name.."/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Price</label>
+                                    <input class="form-control" type="text" name="price" placeholder="Price.."/>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Size</label>
+                                    <select class="form-control" name="size">
+                                        <option value="0">S</option>
+                                        <option value="1">M</option>
+                                        <option value="2">L</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Sugar Level</label>
+                                    <select class="form-control" name="sugarLevel">
+                                        <option value="0">Less</option>
+                                        <option value="1">Normal</option>
+                                        <option value="2">Extra</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Ice Level</label>
+                                    <select class="form-control" name="iceLevel">
+                                        <option value="0">Less</option>
+                                        <option value="1">Normal</option>
+                                        <option value="2">Extra</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Topping</label>
+                                    <select class="form-control" name="idTopping">
+                                        <option th:each="topping : ${listTopping}"
+                                                th:value="${topping.id}"
+                                                th:text="${topping.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 d-flex justify-content-end">
+                                    <a class="btn btn-outline-secondary w-50 text-center" href="@{/boba}">Cancel</a>
+                                </div>
+                                <div class="form-group col-md-6 d-flex justify-content-start">
+                                    <button type="submit" class="btn btn-success w-50 text-center">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

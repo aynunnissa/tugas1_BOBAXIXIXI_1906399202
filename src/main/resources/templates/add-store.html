@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Store</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="row mt-4">
+    <div class="col col-6 offset-3">
+        <div class="card text-white bg-info text-center mb-3">
+            <div class="card-body">
+                <h5 class="card-title text-center" th:text="${msg}"></h5>
+                <a class="btn btn-dark text-center text-white mt-2" th:href="@{/store}">Kembali ke list Store</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

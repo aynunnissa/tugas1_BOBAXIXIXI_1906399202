@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>List Boba</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+<body>
+<nav th:replace="fragments/fragment :: navbar"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h1 th:text="'Add Boba to ' + ${namaStore}"></h1>
+                <form th:action="@{/store/assign-boba}" method="POST">
+                    <input hidden type="text" th:value="${idStore}" name="idStore"/>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Add</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Ice</th>
+                            <th scope="col">Sugar</th>
+                            <th scope="col">Topping</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="boba, iterationStatus : ${listBobaTea}">
+                            <td>
+                                <input type="checkbox" name="listBoba" th:value="${boba.id}" id="flexCheckDefault"
+                                       th:checked="${#lists.contains(selectedBobaTea, boba.id)}"
+                                >
+                            </td>
+                            <td th:text="${boba.name}"></td>
+                            <td th:text="${boba.price}"></td>
+                            <td th:if="${boba.size} == 0">S</td>
+                            <td th:if="${boba.size} == 1">M</td>
+                            <td th:if="${boba.size} == 2">L</td>
+                            <td th:if="${boba.iceLevel} == 0">Small</td>
+                            <td th:if="${boba.iceLevel} == 1">Normal</td>
+                            <td th:if="${boba.iceLevel} == 2">Extra</td>
+                            <td th:if="${boba.sugarLevel} == 0">Small</td>
+                            <td th:if="${boba.sugarLevel} == 1">Normal</td>
+                            <td th:if="${boba.sugarLevel} == 2">Extra</td>
+                            <td th:text="${boba.idTopping.name}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="form-row my-3">
+                        <div class="form-group col-md-6 d-flex justify-content-end">
+                            <a class="btn btn-outline-secondary w-50 text-center" href="@{/store/}">Cancel</a>
+                        </div>
+                        <div class="form-group col-md-6 d-flex justify-content-start">
+                            <button type="submit" class="btn btn-success w-50 text-center">Confirm</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
