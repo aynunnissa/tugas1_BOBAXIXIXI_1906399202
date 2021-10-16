@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -99,6 +100,14 @@ public class StoreController {
     ) {
         //Mendapatkan Store yang ingin diupdate sesuai dengan idStore
         StoreModel store = storeService.getStoreById(idStore);
+        LocalTime time = LocalTime.now();
+        boolean buka = (time.compareTo(store.getCloseHour()) < 0) && time.compareTo(store.getOpenHour()) >= 0;
+        if (buka) {
+            model.addAttribute("listManager", managerService.getListManager());
+            model.addAttribute("store", store);
+            model.addAttribute("msg", store.getName() + " with store code " + store.getStoreCode() + " is currently open and can't be updated!");
+            return "add-store";
+        }
         model.addAttribute("listManager", managerService.getListManager());
         model.addAttribute("store", store);
         return "form-update-store";
@@ -135,9 +144,14 @@ public class StoreController {
         StoreModel store = storeService.getStoreById(idStore);
 
         model.addAttribute("id", idStore);
-        model.addAttribute("msg", store.getName() + " with store code " + store.getStoreCode() + " is successfully deleted!");
-        storeBobaTeaService.deleteStoreBobaTeaModelByIdStore(store);
-        storeService.deleteStore(store);
+
+        if (storeBobaTeaService.getListBobaByIdStore(store).isEmpty()) {
+            storeBobaTeaService.deleteStoreBobaTeaModelByIdStore(store);
+            storeService.deleteStore(store);
+            model.addAttribute("msg", store.getName() + " with store code " + store.getStoreCode() + " is successfully deleted!");
+        } else {
+            model.addAttribute("msg", store.getName() + " masih memiliki Boba Tea sehingga tidak bisa dihapus");
+        }
         return "add-store";
     }
 }

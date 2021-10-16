@@ -1,8 +1,11 @@
 package apap.tugas.bobaxixixi.controller;
 
 import apap.tugas.bobaxixixi.model.BobaTeaModel;
+import apap.tugas.bobaxixixi.model.StoreBobaTeaModel;
+import apap.tugas.bobaxixixi.model.StoreModel;
 import apap.tugas.bobaxixixi.service.BobaTeaService;
 import apap.tugas.bobaxixixi.service.StoreBobaTeaService;
+import apap.tugas.bobaxixixi.service.StoreService;
 import apap.tugas.bobaxixixi.service.ToppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -18,6 +22,10 @@ public class BobaTeaController {
 	@Qualifier("bobaTeaServiceImpl")
     @Autowired
     private BobaTeaService bobaTeaService;
+
+    @Qualifier("storeServiceImpl")
+    @Autowired
+    private StoreService storeService;
 
     @Qualifier("toppingServiceImpl")
     @Autowired
@@ -63,6 +71,15 @@ public class BobaTeaController {
             Model model
     ) {
         BobaTeaModel boba = bobaTeaService.getBobaTeaById(idBobaTea);
+        for (StoreBobaTeaModel obj : storeBobaTeaService.getListStoreByIdBoba(boba)) {
+            StoreModel store = storeService.getStoreById(obj.getIdStore().getId());
+            LocalTime time = LocalTime.now();
+            boolean buka = (time.compareTo(store.getCloseHour()) < 0) && time.compareTo(store.getOpenHour()) >= 0;
+            if (buka) {
+                model.addAttribute("msg", boba.getName() + " tidak bisa diupdate karena masih ada Store yang sedang menjualnya");
+                return "add-boba-tea";
+            }
+        }
         model.addAttribute("listTopping", toppingService.getListTopping());
         model.addAttribute("boba", boba);
         return "form-update-boba-tea";
@@ -73,10 +90,17 @@ public class BobaTeaController {
             @ModelAttribute BobaTeaModel bobaTea,
             Model model
     ) {
+        boolean bisaDihapus = false;
+        model.addAttribute("id", bobaTea.getId());
+        for (StoreBobaTeaModel obj : storeBobaTeaService.getListStoreByIdBoba(bobaTea)) {
+            StoreModel store = storeService.getStoreById(obj.getIdStore().getId());
+            LocalTime time = LocalTime.now();
+            boolean buka = (time.compareTo(store.getCloseHour()) < 0) && time.compareTo(store.getOpenHour()) >= 0;
+            if (buka) {
+                model.addAttribute("msg", bobaTea.getName() + " tidak bisa diupdate karena masih ada Store yang sedang menjualnya");
+            }
+        }
         BobaTeaModel updatedBoba = bobaTeaService.updateBobaTea(bobaTea);
-
-        model.addAttribute("id", updatedBoba.getId());
-        model.addAttribute("msg", bobaTea.getName() + " is successfully updated!");
         return "add-boba-tea";
     }
 
@@ -88,6 +112,10 @@ public class BobaTeaController {
         BobaTeaModel bobaTea = bobaTeaService.getBobaTeaById(idBobaTea);
 
         model.addAttribute("id", idBobaTea);
+        if (!storeBobaTeaService.getListStoreByIdBoba(bobaTea).isEmpty()) {
+            model.addAttribute("msg", bobaTea.getName() + " tidak bisa dihapus karena sedang dijual di Toko tertentu");
+            return "add-boba-tea";
+        }
         model.addAttribute("msg", bobaTea.getName() + " is successfully deleted!");
         storeBobaTeaService.deleteStoreBobaTeaModelByIdBoba(bobaTea);
         bobaTeaService.deleteBobaTea(bobaTea);
